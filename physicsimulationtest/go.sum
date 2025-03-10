@@ -1,0 +1,4 @@
+github.com/Alexander-r/box2d v0.0.0-20230415223313-09ae65535f83 h1:Pe/2Il1m36yw6WWFdUBh6bUR8qmiBEqNn29VjfDLrn4=
+github.com/Alexander-r/box2d v0.0.0-20230415223313-09ae65535f83/go.mod h1:0/P1FoLSgfm9X95R8n1IBh38rnp8Sx+tEXcKv/WcMAU=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
