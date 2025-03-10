@@ -12,6 +12,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /", handlers.HandleRoot)
+	mux.HandleFunc("GET /generate_game", handlers.GenerateGame)
 
 	loggedMux := middleware.Logging(mux)
 
