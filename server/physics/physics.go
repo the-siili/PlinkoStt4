@@ -2,10 +2,10 @@ package physics
 
 import (
 	"fmt"
+	"math/rand/v2"
 
 	"github.com/Alexander-r/box2d"
 )
-
 
 func GenerateGame() [][2]float64 {
 
@@ -29,7 +29,6 @@ func GenerateGame() [][2]float64 {
 	timeStep := 1.0 / 60.0
 	velocityIterations := 8
 	positionIterations := 3
-
 	// This is our little game loop.
 	for {
 		world.Step(timeStep, velocityIterations, positionIterations)
