@@ -1,15 +1,11 @@
-package main
+package physics
 
 import (
 	"fmt"
-	"math/rand/v2"
 
 	"github.com/Alexander-r/box2d"
 )
 
-func main() {
-	fmt.Println(GenerateGame())
-}
 
 func GenerateGame() [][2]float64 {
 
