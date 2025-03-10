@@ -1,0 +1,1105 @@
+[gd_scene load_steps=16 format=3 uid="uid://xl15v4bq6vtr"]
+
+[ext_resource type="Script" uid="uid://b1v5mlv5qugod" path="res://master.gd" id="1_te040"]
+[ext_resource type="Script" uid="uid://cmk4e5cv5mux" path="res://result_box.gd" id="2_8aqai"]
+[ext_resource type="Script" uid="uid://cafk7kyaudhsj" path="res://pin_collision.gd" id="2_s35ub"]
+[ext_resource type="AudioStream" uid="uid://c0o4cgk4ehrnw" path="res://coll_sound.ogg" id="3_h2bm4"]
+[ext_resource type="AudioStream" uid="uid://dvwyi4todf7c5" path="res://goal_sound.ogg" id="3_ofr4s"]
+[ext_resource type="AudioStream" uid="uid://bx60iwbbgyubx" path="res://button_sound.ogg" id="5_viqro"]
+
+[sub_resource type="Animation" id="Animation_8aqai"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [41.0]
+}
+
+[sub_resource type="Animation" id="Animation_h2bm4"]
+resource_name = "bounce"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0674242, 0.248044),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [41.0, 65.0, 41.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_viqro"]
+_data = {
+&"RESET": SubResource("Animation_8aqai"),
+&"bounce": SubResource("Animation_h2bm4")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h2bm4"]
+size = Vector2(78, 88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8usfs"]
+size = Vector2(258, 88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ofr4s"]
+size = Vector2(239, 88)
+
+[sub_resource type="Gradient" id="Gradient_h2bm4"]
+offsets = PackedFloat32Array(0.637555, 0.702128)
+colors = PackedColorArray(1, 1, 1, 1, 0.933333, 0.933333, 0.933333, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8aqai"]
+gradient = SubResource("Gradient_h2bm4")
+width = 50
+height = 50
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_te040"]
+radius = 26.0
+
+[node name="Master" type="Node"]
+script = ExtResource("1_te040")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.709
+anchor_top = -3.226
+anchor_right = 1.76
+anchor_bottom = 0.237
+offset_left = 724.4
+offset_top = 268.8
+offset_right = -757.0
+offset_bottom = -2303.6
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 96
+text = "Play"
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+z_index = 125
+layout_mode = 0
+offset_left = -543.0
+offset_top = -1855.0
+offset_right = 592.0
+offset_bottom = -1526.0
+color = Color(0.294118, 0, 0.176471, 1)
+
+[node name="SpinBox" type="SpinBox" parent="Control" groups=["bet_box"]]
+layout_mode = 0
+offset_left = -1003.0
+offset_top = -2368.0
+offset_right = -904.0
+offset_bottom = -2329.0
+scale = Vector2(3.76, 3.76)
+max_value = 1e+09
+step = 0.5
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -1002.0
+offset_top = -2494.0
+offset_right = -709.0
+offset_bottom = -2369.0
+theme_override_font_sizes/font_size = 91
+text = "Bet:"
+vertical_alignment = 2
+
+[node name="ResultBox" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = -100.0
+offset_top = 41.0
+offset_right = 100.0
+offset_bottom = 163.995
+color = Color(1, 0.799238, 0.162968, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "0.2x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox/Area2D"]
+position = Vector2(102, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+
+[node name="ResultBox2" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = -300.0
+offset_top = 41.0
+offset_right = -100.0
+offset_bottom = 163.995
+color = Color(1, 0.580392, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox2"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "0.3x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox2"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox2/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox2"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 1.25
+
+[node name="ResultBox3" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = 100.0
+offset_top = 41.0
+offset_right = 300.0
+offset_bottom = 163.995
+color = Color(1, 0.580392, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox3"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "0.3x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox3"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox3/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox3"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 1.25
+
+[node name="ResultBox4" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = 300.0
+offset_top = 41.0
+offset_right = 500.0
+offset_bottom = 163.995
+color = Color(1, 0.431373, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox4"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "1.5x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox4"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox4"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox4/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox4"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 1.6
+
+[node name="ResultBox5" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = -499.0
+offset_top = 41.0
+offset_right = -299.0
+offset_bottom = 163.995
+color = Color(1, 0.431373, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox5"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "1.5x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox5"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox5/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox5"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 1.6
+
+[node name="ResultBox6" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = -699.0
+offset_top = 41.0
+offset_right = -499.0
+offset_bottom = 163.995
+color = Color(1, 0.223529, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox6"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "4x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox6"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox6"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox6/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox6"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 2.07
+
+[node name="ResultBox7" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = 500.0
+offset_top = 41.0
+offset_right = 700.0
+offset_bottom = 163.995
+color = Color(1, 0.223529, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox7"]
+z_index = 165
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "4x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox7"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox7"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox7/Area2D"]
+position = Vector2(99.5, 36)
+shape = SubResource("RectangleShape2D_h2bm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox7"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 2.07
+
+[node name="ResultBox8" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = 700.0
+offset_top = 41.0
+offset_right = 1000.0
+offset_bottom = 163.995
+color = Color(1, 0, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox8"]
+z_index = 165
+layout_mode = 0
+offset_right = 299.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "29x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox8"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox8"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox8/Area2D"]
+position = Vector2(170, 36)
+shape = SubResource("RectangleShape2D_8usfs")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox8"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 2.54
+
+[node name="ResultBox9" type="ColorRect" parent="Control"]
+z_index = 165
+layout_mode = 0
+offset_left = -999.0
+offset_top = 41.0
+offset_right = -699.0
+offset_bottom = 163.995
+color = Color(1, 0, 0.164706, 1)
+script = ExtResource("2_8aqai")
+
+[node name="Label" type="Label" parent="Control/ResultBox9"]
+z_index = 165
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 120.765
+theme_override_colors/font_color = Color(0.194349, 0.194349, 0.194349, 1)
+theme_override_font_sizes/font_size = 51
+text = "29x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ResultBox9"]
+libraries = {
+&"": SubResource("AnimationLibrary_viqro")
+}
+
+[node name="Area2D" type="Area2D" parent="Control/ResultBox9"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Control/ResultBox9/Area2D"]
+position = Vector2(119.5, 36)
+shape = SubResource("RectangleShape2D_ofr4s")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/ResultBox9"]
+stream = ExtResource("3_ofr4s")
+volume_db = -9.138
+pitch_scale = 2.54
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -1200)
+zoom = Vector2(0.285, 0.285)
+
+[node name="Pins" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Pins"]
+position = Vector2(100, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Pins"]
+position = Vector2(-100, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D2" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D2/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Pins"]
+position = Vector2(-301, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D3" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D3/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Pins"]
+position = Vector2(-499, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D4" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D4/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Pins"]
+position = Vector2(-700, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D5" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D5/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Pins"]
+position = Vector2(-900, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D6" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D6/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Pins"]
+position = Vector2(299, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D7" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D7/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Pins"]
+position = Vector2(499, 1)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D8" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D8/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Pins"]
+position = Vector2(698, 0)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D9" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D9/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D29" type="Sprite2D" parent="Pins"]
+position = Vector2(200, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D29" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D29/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D30" type="Sprite2D" parent="Pins"]
+position = Vector2(0, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D30" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D30/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D31" type="Sprite2D" parent="Pins"]
+position = Vector2(-201, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D31" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D31/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D32" type="Sprite2D" parent="Pins"]
+position = Vector2(-399, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D32" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D32/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D33" type="Sprite2D" parent="Pins"]
+position = Vector2(-600, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D33" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D33/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D34" type="Sprite2D" parent="Pins"]
+position = Vector2(-800, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D34" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D34/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D35" type="Sprite2D" parent="Pins"]
+position = Vector2(399, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D35" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D35/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D36" type="Sprite2D" parent="Pins"]
+position = Vector2(599, -199)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D36" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D36/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D38" type="Sprite2D" parent="Pins"]
+position = Vector2(200, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D38" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D38/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D39" type="Sprite2D" parent="Pins"]
+position = Vector2(0, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D39" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D39/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D40" type="Sprite2D" parent="Pins"]
+position = Vector2(-201, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D40" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D40/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D41" type="Sprite2D" parent="Pins"]
+position = Vector2(-399, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D41" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D41/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D42" type="Sprite2D" parent="Pins"]
+position = Vector2(-600, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D42" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D42/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D43" type="Sprite2D" parent="Pins"]
+position = Vector2(399, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D43" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D43/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D45" type="Sprite2D" parent="Pins"]
+position = Vector2(200, -1000)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D45" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D45/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D46" type="Sprite2D" parent="Pins"]
+position = Vector2(0, -1000)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D46" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D46/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D47" type="Sprite2D" parent="Pins"]
+position = Vector2(-201, -1000)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D47" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D47/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D50" type="Sprite2D" parent="Pins"]
+position = Vector2(200, -1400)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D50" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D50/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D51" type="Sprite2D" parent="Pins"]
+position = Vector2(0, -1400)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D51" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D51/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D52" type="Sprite2D" parent="Pins"]
+position = Vector2(-201, -1400)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D52" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D52/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D48" type="Sprite2D" parent="Pins"]
+position = Vector2(-399, -1000)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D48" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D48/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D49" type="Sprite2D" parent="Pins"]
+position = Vector2(399, -1000)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D49" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D49/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D44" type="Sprite2D" parent="Pins"]
+position = Vector2(599, -600)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D44" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D44/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D37" type="Sprite2D" parent="Pins"]
+position = Vector2(798, -200)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D37" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D37/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D11" type="Sprite2D" parent="Pins"]
+position = Vector2(100, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D11" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D11/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D12" type="Sprite2D" parent="Pins"]
+position = Vector2(-100, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D12" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D12/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D13" type="Sprite2D" parent="Pins"]
+position = Vector2(-301, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D13" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D13/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D14" type="Sprite2D" parent="Pins"]
+position = Vector2(-499, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D14" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D14/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D15" type="Sprite2D" parent="Pins"]
+position = Vector2(-700, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D15" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D15/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D16" type="Sprite2D" parent="Pins"]
+position = Vector2(299, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D16" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D16/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D17" type="Sprite2D" parent="Pins"]
+position = Vector2(499, -399)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D17" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D17/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D19" type="Sprite2D" parent="Pins"]
+position = Vector2(100, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D19" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D19/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D20" type="Sprite2D" parent="Pins"]
+position = Vector2(-100, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D20" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D20/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D21" type="Sprite2D" parent="Pins"]
+position = Vector2(-301, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D21" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D21/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D22" type="Sprite2D" parent="Pins"]
+position = Vector2(-499, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D22" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D22/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D23" type="Sprite2D" parent="Pins"]
+position = Vector2(299, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D23" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D23/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D25" type="Sprite2D" parent="Pins"]
+position = Vector2(100, -1203)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D25" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D25/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D26" type="Sprite2D" parent="Pins"]
+position = Vector2(-100, -1203)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D26" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D26/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D27" type="Sprite2D" parent="Pins"]
+position = Vector2(-301, -1203)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D27" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D27/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D28" type="Sprite2D" parent="Pins"]
+position = Vector2(299, -1203)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D28" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D28/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D24" type="Sprite2D" parent="Pins"]
+position = Vector2(499, -800)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D24" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D24/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D18" type="Sprite2D" parent="Pins"]
+position = Vector2(698, -400)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D18" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D18/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Pins"]
+position = Vector2(900, 0)
+texture = SubResource("GradientTexture2D_8aqai")
+
+[node name="Area2D" type="Area2D" parent="Pins/Sprite2D10" node_paths=PackedStringArray("audio_player")]
+script = ExtResource("2_s35ub")
+audio_player = NodePath("../../../AudioStreamPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pins/Sprite2D10/Area2D"]
+shape = SubResource("CircleShape2D_te040")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_h2bm4")
+volume_db = -0.496
+
+[node name="ButtonAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_viqro")
+volume_db = 14.795
+
+[connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
+[connection signal="area_entered" from="Control/ResultBox/Area2D" to="Control/ResultBox" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox2/Area2D" to="Control/ResultBox2" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox3/Area2D" to="Control/ResultBox3" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox4/Area2D" to="Control/ResultBox4" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox5/Area2D" to="Control/ResultBox5" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox6/Area2D" to="Control/ResultBox6" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox7/Area2D" to="Control/ResultBox7" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox8/Area2D" to="Control/ResultBox8" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Control/ResultBox9/Area2D" to="Control/ResultBox9" method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D/Area2D" to="Pins/Sprite2D/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D2/Area2D" to="Pins/Sprite2D2/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D3/Area2D" to="Pins/Sprite2D3/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D4/Area2D" to="Pins/Sprite2D4/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D5/Area2D" to="Pins/Sprite2D5/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D6/Area2D" to="Pins/Sprite2D6/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D7/Area2D" to="Pins/Sprite2D7/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D8/Area2D" to="Pins/Sprite2D8/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D9/Area2D" to="Pins/Sprite2D9/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D29/Area2D" to="Pins/Sprite2D29/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D30/Area2D" to="Pins/Sprite2D30/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D31/Area2D" to="Pins/Sprite2D31/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D32/Area2D" to="Pins/Sprite2D32/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D33/Area2D" to="Pins/Sprite2D33/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D34/Area2D" to="Pins/Sprite2D34/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D35/Area2D" to="Pins/Sprite2D35/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D36/Area2D" to="Pins/Sprite2D36/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D38/Area2D" to="Pins/Sprite2D38/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D39/Area2D" to="Pins/Sprite2D39/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D40/Area2D" to="Pins/Sprite2D40/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D41/Area2D" to="Pins/Sprite2D41/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D42/Area2D" to="Pins/Sprite2D42/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D43/Area2D" to="Pins/Sprite2D43/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D45/Area2D" to="Pins/Sprite2D45/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D46/Area2D" to="Pins/Sprite2D46/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D47/Area2D" to="Pins/Sprite2D47/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D50/Area2D" to="Pins/Sprite2D50/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D51/Area2D" to="Pins/Sprite2D51/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D52/Area2D" to="Pins/Sprite2D52/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D48/Area2D" to="Pins/Sprite2D48/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D49/Area2D" to="Pins/Sprite2D49/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D44/Area2D" to="Pins/Sprite2D44/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D37/Area2D" to="Pins/Sprite2D37/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D11/Area2D" to="Pins/Sprite2D11/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D12/Area2D" to="Pins/Sprite2D12/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D13/Area2D" to="Pins/Sprite2D13/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D14/Area2D" to="Pins/Sprite2D14/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D15/Area2D" to="Pins/Sprite2D15/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D16/Area2D" to="Pins/Sprite2D16/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D17/Area2D" to="Pins/Sprite2D17/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D19/Area2D" to="Pins/Sprite2D19/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D20/Area2D" to="Pins/Sprite2D20/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D21/Area2D" to="Pins/Sprite2D21/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D22/Area2D" to="Pins/Sprite2D22/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D23/Area2D" to="Pins/Sprite2D23/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D25/Area2D" to="Pins/Sprite2D25/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D26/Area2D" to="Pins/Sprite2D26/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D27/Area2D" to="Pins/Sprite2D27/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D28/Area2D" to="Pins/Sprite2D28/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D24/Area2D" to="Pins/Sprite2D24/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D18/Area2D" to="Pins/Sprite2D18/Area2D" method="_on_area_entered"]
+[connection signal="area_entered" from="Pins/Sprite2D10/Area2D" to="Pins/Sprite2D10/Area2D" method="_on_area_entered"]

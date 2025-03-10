@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://4mcs6xrm7w3v"]
+
+[ext_resource type="Script" uid="uid://db08emystc15w" path="res://http_request.gd" id="1_lwa6f"]
+
+[node name="HTTPRequest" type="HTTPRequest"]
+script = ExtResource("1_lwa6f")
+
+[connection signal="request_completed" from="." to="." method="_on_request_completed"]

@@ -14,15 +14,17 @@ func HandleRoot(w http.ResponseWriter, r *http.Request) {
 
 func GenerateGame(w http.ResponseWriter, r *http.Request) {
 	// Generate game data
-	gameData := physics.GenerateGame()
+	gameData, multiplier := physics.GenerateGame()
 	// Set response content type to JSON
 	w.Header().Set("Content-Type", "application/json")
 
 	// Wrap the slice in a struct
 	response := struct {
-		Positions [][2]float64 `json:"positions"`
+		Positions  [][2]float64 `json:"positions"`
+		Multiplier float64      `json:"multiplier"`
 	}{
-		Positions: gameData,
+		Positions:  gameData,
+		Multiplier: multiplier,
 	}
 
 	// Set response content type to JSON
