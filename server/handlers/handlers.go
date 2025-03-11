@@ -47,7 +47,7 @@ func GenerateGame(w http.ResponseWriter, r *http.Request) {
 
 	// Wrap the slice in a struct
 	response := struct {
-		Positions  [][2]float64 `json:"positions"`
+		Positions  [][3]float64 `json:"positions"`
 		Multiplier float64      `json:"multiplier"`
 		Win        float64      `json:"win"`
 	}{

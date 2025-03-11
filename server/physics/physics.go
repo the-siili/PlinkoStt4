@@ -7,9 +7,9 @@ import (
 	"github.com/Alexander-r/box2d"
 )
 
-func GenerateGame() ([][2]float64, float64) {
+func GenerateGame() ([][3]float64, float64) {
 
-	position_slice := [][2]float64{}
+	position_slice := [][3]float64{}
 
 	//fmt.Println(position_slice)
 
@@ -37,7 +37,7 @@ func GenerateGame() ([][2]float64, float64) {
 
 		pos := ball_body.GetPosition()
 
-		position_slice = append(position_slice, [2]float64{pos.X, pos.Y})
+		position_slice = append(position_slice, [3]float64{pos.X, pos.Y, ball_body.GetAngle()})
 		if ball_body.GetPosition().Y <= -0.8 {
 			break
 		}
@@ -56,7 +56,7 @@ func generate_ball(world *box2d.B2World) *box2d.B2Body {
 	bd := box2d.MakeB2BodyDef()
 	bd.Position.Set(-0.7+rand.Float64()*(0.7+0.7), 16.0)
 	bd.Type = box2d.B2BodyType.B2_dynamicBody
-	bd.FixedRotation = true
+	bd.FixedRotation = false
 	bd.AllowSleep = false
 
 	ball_body := world.CreateBody(&bd)

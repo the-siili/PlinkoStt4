@@ -13,7 +13,7 @@ func _on_request_completed(result: int, response_code: int, headers: PackedStrin
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	var new_ball = ball_scene.instantiate()
 	new_ball.position = Vector2(0, 1500.0)
-	new_ball.positions = json["positions"]
+	new_ball.data = json["positions"]
 	print(response_code)
 	print(json["multiplier"])
 	print(json["win"])
