@@ -1,6 +1,7 @@
 package physics
 
 import (
+	"fmt"
 	"math/rand/v2"
 	"time"
 
@@ -31,11 +32,28 @@ func GenerateGame() ([][3]float64, float64) {
 	positionIterations := 3
 
 	start_time := time.Now().UnixMilli()
+
+	old_y := ball_body.GetPosition().Y
+	just_bounced := false
 	// This is our little game loop.
 	for {
 		world.Step(timeStep, velocityIterations, positionIterations)
 
 		pos := ball_body.GetPosition()
+
+		if pos.Y > old_y && !just_bounced {
+			just_bounced = true
+			fmt.Println("bounced")
+			//add force towards middle to ball
+			imp_x := (pos.X / 7.0) * rand.Float64()
+			fmt.Println(pos.X)
+			ball_body.ApplyLinearImpulseToCenter(box2d.B2Vec2{X: -imp_x, Y: -0.3}, true)
+
+		} else {
+			just_bounced = false
+		}
+
+		old_y = ball_body.GetPosition().Y
 
 		position_slice = append(position_slice, [3]float64{pos.X, pos.Y, ball_body.GetAngle()})
 		if ball_body.GetPosition().Y <= -0.8 {
@@ -67,7 +85,9 @@ func generate_ball(world *box2d.B2World) *box2d.B2Body {
 	fd := box2d.MakeB2FixtureDef()
 	fd.Shape = &shape
 	fd.Density = 1
-	fd.Friction = 0.2
+	//fd.Friction = 0.2
+	//fd.Restitution = 0.6
+	fd.Friction = 1.0
 	fd.Restitution = 0.6
 
 	ball_body.CreateFixtureFromDef(&fd)
