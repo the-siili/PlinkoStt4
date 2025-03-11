@@ -1,7 +1,6 @@
 package physics
 
 import (
-	"fmt"
 	"math/rand/v2"
 
 	"github.com/Alexander-r/box2d"
@@ -11,7 +10,7 @@ func GenerateGame() ([][2]float64, float64) {
 
 	position_slice := [][2]float64{}
 
-	fmt.Println(position_slice)
+	//fmt.Println(position_slice)
 
 	// Define the gravity vector.
 	gravity := box2d.MakeB2Vec2(0.0, -12.81)
