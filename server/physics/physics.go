@@ -2,6 +2,7 @@ package physics
 
 import (
 	"math/rand/v2"
+	"time"
 
 	"github.com/Alexander-r/box2d"
 )
@@ -28,6 +29,8 @@ func GenerateGame() ([][2]float64, float64) {
 	timeStep := 1.0 / 60.0
 	velocityIterations := 8
 	positionIterations := 3
+
+	start_time := time.Now().UnixMilli()
 	// This is our little game loop.
 	for {
 		world.Step(timeStep, velocityIterations, positionIterations)
@@ -37,6 +40,9 @@ func GenerateGame() ([][2]float64, float64) {
 		position_slice = append(position_slice, [2]float64{pos.X, pos.Y})
 		if ball_body.GetPosition().Y <= -0.8 {
 			break
+		}
+		if time.Now().UnixMilli()-start_time > 30 {
+			return GenerateGame()
 		}
 
 	}
