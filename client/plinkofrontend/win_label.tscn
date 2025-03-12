@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://fxgsuimx4nb2"]
+
+[ext_resource type="Script" uid="uid://bwhiotbvmqigf" path="res://win_label.gd" id="1_1orhc"]
+
+[node name="WinLabel" type="Label"]
+z_index = 265
+offset_left = -593.0
+offset_top = -2110.0
+offset_right = 599.0
+offset_bottom = -1720.0
+theme_override_font_sizes/font_size = 286
+text = "+500"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_1orhc")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
